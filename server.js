@@ -16,6 +16,6 @@ mongoose.connect(process.env.DB_URI).then(() => {
 app.use(express.json());
 app.use(cors());
 
-app.route("api/v1/user/auth", authRoute);
-app.route("api/v1/stations", stationsRoute);
-app.route("api/v1/favorites", favRoute);
+app.use("/api/v1/user/auth", authRoute);
+app.use("/api/v1/stations", stationsRoute);
+app.use("/api/v1/favorites", favRoute);
