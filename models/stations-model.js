@@ -10,6 +10,7 @@ const stationsSchema = new Schema(
     url_resolved: {
       type: String,
       required: [true, "url required"],
+      unique: true,
     },
     country: {
       type: String,

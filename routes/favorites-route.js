@@ -24,11 +24,12 @@ router.get("/", async (req, res) => {
 router.put("/", async (req, res) => {
   const userId = req.userId;
   const newFavorite = req.body;
-  const newFavoriteId = newFavorite._id;
+  const newFavoriteId = newFavorite.id;
+
   try {
     const user = await User.findOne({
       _id: userId,
-      "favorites._id": newFavoriteId,
+      "favorites.id": newFavoriteId,
     });
     if (user) {
       res.status(404).json({ error: "Station already exist in favorites" });
@@ -56,14 +57,14 @@ router.delete("/:favoriteId", async (req, res) => {
   try {
     const user = await User.findOne({
       _id: userId,
-      "favorites.id": Number(favoriteId),
+      "favorites.id": favoriteId,
     });
     if (!user) {
       res.status(404).json({ error: "Item not found in favorites" });
     } else {
-      const result = User.updateOne(
+      const result = await User.updateOne(
         { _id: userId },
-        { $pull: { favorites: favoriteId } }
+        { $pull: { favorites: { id: favoriteId } } }
       );
       if (result.modifiedCount)
         res.status(200).json({ message: "station deleted from favorites" });

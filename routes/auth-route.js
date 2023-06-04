@@ -58,8 +58,8 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    if (!email) throw "Email required ";
-    if (!password) throw "Password required ";
+    if (!email) throw { email: "Email required " };
+    if (!password) throw { password: "Password required " };
     const user = await User.findOne({ email: email });
     if (user) {
       const result = await bcrypt.compare(password, user.password);
@@ -75,7 +75,6 @@ router.post("/login", async (req, res) => {
       throw "Invalid email or password";
     }
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: err });
   }
 });
@@ -86,10 +85,10 @@ router.delete("/", reqAuthorization, async (req, res) => {
 
   try {
     const user = await User.findByIdAndDelete(userId);
-    if (!user) throw "User not found";
+    if (!user) res.status(404).json({ error: "User not found" });
     res.status(200).json({ message: "Account deleted" });
   } catch (error) {
-    res.status(400).json({ error });
+    res.status(500).json({ error, message: "internal server error" });
   }
 });
 
