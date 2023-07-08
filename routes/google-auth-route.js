@@ -3,7 +3,6 @@ const router = express.Router();
 const { OAuth2Client } = require("google-auth-library");
 const axios = require("axios");
 const User = require("../models/user-model");
-const handleNewUserError = require("../utils/handleSignUpErrors");
 const createToken = require("../utils/createToken");
 
 const redirectUrl = `${process.env.REDIRECT_BASE_URL}/api/v1/oauth/google`;
